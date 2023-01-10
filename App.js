@@ -1,112 +1,70 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+//imports necessários para a realização das funções
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import styles from './styles';
+import {calcular} from './functions';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+export default function App() {
+  const [texto1, setTexto1] = useState('');
+  const [texto2, setTexto2] = useState('');
+  const [operacao, setOperacao] = useState(0);
+  const [resultado, setResultado] = useState(0);
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.texto2}>Calculadora</Text>
+
+      <View style={styles.linha}>
+        <TouchableOpacity
+          style={[styles.botao, operacao === '+' ? styles.selecionar : false]}
+          onPress={() => setOperacao('+')}>
+          <Text style={styles.texto}>ADIÇÃO</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.botao, operacao === '-' ? styles.selecionar : false]}
+          onPress={() => setOperacao('-')}>
+          <Text style={styles.texto}>SUBTRAÇÃO</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.botao, operacao === '*' ? styles.selecionar : false]}
+          onPress={() => setOperacao('*')}>
+          <Text style={styles.texto}>MULTIPLICAÇÃO</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.botao, operacao === '/' ? styles.selecionar : false]}
+          onPress={() => setOperacao('/')}>
+          <Text style={styles.texto}>DIVISÃO</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TextInput
+        value={texto1}
+        onChangeText={text => {
+          setTexto1(text);
+        }}
+        style={styles.input}
+        keyboardType={'number-pad'}
+      />
+
+      <TextInput
+        value={texto2}
+        onChangeText={text => {
+          setTexto2(text);
+        }}
+        style={styles.input}
+        keyboardType={'number-pad'}
+      />
+
+      <TouchableOpacity
+        style={styles.botao2}
+        onPress={() => calcular(texto1, texto2, operacao, setResultado)}>
+        <Text style={styles.texto3}>CALCULAR</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.input}> {resultado} </Text>
     </View>
   );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+}
